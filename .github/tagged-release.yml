@@ -1,0 +1,29 @@
+---
+name: "tagged-release"
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  tagged-release:
+    name: "Tagged Release"
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: "Checkout source code"
+        uses: "actions/checkout@master"
+      - name: "Build EA API"
+        run: |
+          cd eaapi
+          ../mvnw install:install-file -Dfile=eaapi.jar -DpomFile=pom.xml
+      - name: "Build EA HTML generator"
+        run: |
+          ./mvnw clean install
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          files: |
+            target/*.jar
