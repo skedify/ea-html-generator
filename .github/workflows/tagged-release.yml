@@ -16,8 +16,7 @@ jobs:
         uses: "actions/checkout@master"
       - name: "Build EA API"
         run: |
-          cd eaapi
-          ../mvnw install:install-file -Dfile=eaapi.jar -DpomFile=pom.xml
+          cd eaapi && ../mvnw install:install-file -Dfile=eaapi.jar -DpomFile=pom.xml & cd ..
       - name: "Build EA HTML generator"
         run: |
           ./mvnw clean install
